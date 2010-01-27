@@ -1,0 +1,13 @@
+Desdemona - A Othello Competition Framework
+===========================================
+
+Desdemona is an Othello competition framework created to allow students to play their AI bots against each other. It is being created for the "CS698 - Introduction to Artificial Intelligence" course, taken at IIT Madras.
+
+Features:
+* Plug-in like functionality for each bot. Submitted bots are in a ".so" format.
+    * Each bot must expose 2 functions:
+        * initialize()
+        * playMove()
+* Save and playback games
+* Console visualisation of the games (can be enabled)
+
