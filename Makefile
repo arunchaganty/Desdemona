@@ -3,9 +3,9 @@
 #
 
 CC=g++
-CFLAGS=-Wall -g
+CFLAGS=-Wall -g -Iinclude/
 CXXFLAGS=$(CFLAGS)
-LDFLAGS=
+LDFLAGS=-g
 TARGETS=bin/Desdemona
 
 VERSION=0.1
@@ -15,13 +15,34 @@ DISTFILES=bin/desdemona tests/ doc/ README
 
 all: $(TARGETS)
 
-bin/Desdemona: obj/main.o
+bin/Desdemona: obj/main.o obj/Othello.o obj/OthelloBoard.o obj/OthelloGame.o obj/OthelloPlayer.o obj/DummyPlayer.o
 	if [ ! -e lib ]; then mkdir lib; fi;
 	$(CC) $(LDFLAGS) $^ -o $@
 
 obj/main.o: src/main.cpp
 	if [ ! -e obj ]; then mkdir obj; fi;
 	$(CC) $(CFLAGS) -c $^ -o $@
+
+obj/Othello.o: src/Othello.cpp
+	if [ ! -e obj ]; then mkdir obj; fi;
+	$(CC) $(CFLAGS) -c $^ -o $@
+
+obj/OthelloBoard.o: src/OthelloBoard.cpp
+	if [ ! -e obj ]; then mkdir obj; fi;
+	$(CC) $(CFLAGS) -c $^ -o $@
+
+obj/OthelloPlayer.o: src/OthelloPlayer.cpp
+	if [ ! -e obj ]; then mkdir obj; fi;
+	$(CC) $(CFLAGS) -c $^ -o $@
+
+obj/OthelloGame.o: src/OthelloGame.cpp
+	if [ ! -e obj ]; then mkdir obj; fi;
+	$(CC) $(CFLAGS) -c $^ -o $@
+
+obj/DummyPlayer.o: src/DummyPlayer.cpp
+	if [ ! -e obj ]; then mkdir obj; fi;
+	$(CC) $(CFLAGS) -c $^ -o $@
+
 
 src-dist: 
 	rm -rf Desdemona-src-$(VERSION)
