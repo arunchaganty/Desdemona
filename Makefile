@@ -15,7 +15,7 @@ DISTFILES=bin/desdemona tests/ doc/ README
 
 all: $(TARGETS)
 
-bin/Desdemona: obj/main.o obj/Othello.o obj/OthelloBoard.o obj/LoggedOthelloGame.o obj/OthelloGame.o obj/OthelloPlayer.o obj/HumanPlayer.o
+bin/Desdemona: obj/main.o obj/Othello.o obj/OthelloBoard.o obj/LoggedOthelloGame.o obj/OthelloGame.o obj/OthelloPlayer.o obj/HumanPlayer.o obj/RandomPlayer.o
 	if [ ! -e lib ]; then mkdir lib; fi;
 	$(CC) $(LDFLAGS) $^ -o $@
 
@@ -44,6 +44,10 @@ obj/LoggedOthelloGame.o: src/LoggedOthelloGame.cpp
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 obj/HumanPlayer.o: src/HumanPlayer.cpp
+	if [ ! -e obj ]; then mkdir obj; fi;
+	$(CC) $(CFLAGS) -c $^ -o $@
+
+obj/RandomPlayer.o: src/RandomPlayer.cpp
 	if [ ! -e obj ]; then mkdir obj; fi;
 	$(CC) $(CFLAGS) -c $^ -o $@
 

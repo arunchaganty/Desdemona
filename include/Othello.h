@@ -54,14 +54,14 @@ namespace Desdemona
              *
              * @param other - 
              */
-            bool operator==( const Move& other );
+            bool operator==( const Move other ) const;
 
             static Move empty()
             {
                 return Move( 0, 0 );
             }
 
-            static Move pass()
+            static const Move pass()
             {
                 return Move( -1, -1 );
             }
@@ -71,14 +71,21 @@ namespace Desdemona
                 int x;
                 int y;
 
-                if( moveStr.length() != 2 )
+                if( moveStr.length() == 1 && moveStr[0] == 'p' )
+                {
+                    return Move::pass();
+                }
+                else if( moveStr.length() == 2 )
+                {
+                    x = moveStr[0] - 'a';
+                    y = moveStr[1] - '0';
+
+                    return Move( x, y );
+                }
+                else
                 {
                     throw exception();
                 }
-                x = moveStr[0] - 'a';
-                y = moveStr[1] - '0';
-
-                return Move( x, y );
             }
 
             /**

@@ -8,7 +8,8 @@
 #include "HumanPlayer.h"
 using namespace Desdemona;
 
-HumanPlayer::HumanPlayer()
+HumanPlayer::HumanPlayer( Turn turn ):
+    OthelloPlayer( turn )
 {
 }
 

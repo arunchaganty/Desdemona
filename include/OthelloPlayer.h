@@ -15,11 +15,12 @@ namespace Desdemona
     class OthelloPlayer
     {
         public:
+            Turn turn;
 
             /**
              * Default constructor
              */
-            OthelloPlayer();
+            OthelloPlayer( Turn turn );
 
             virtual Move play( const OthelloBoard& board );
 

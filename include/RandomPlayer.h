@@ -1,5 +1,5 @@
-#ifndef HUMANPLAYER_H
-#define HUMANPLAYER_H
+#ifndef RANDOMPLAYER_H
+#define RANDOMPLAYER_H
 
 /**
  * @brief DummyPlayer Class that makes dummy moves
@@ -13,14 +13,14 @@
 
 namespace Desdemona
 {
-    class HumanPlayer: public OthelloPlayer
+    class RandomPlayer: public OthelloPlayer
     {
         public:
 
             /**
              * Default constructor
              */
-            HumanPlayer( Turn turn );
+            RandomPlayer( Turn turn );
             Move play( const OthelloBoard& board );
 
         private:
@@ -28,4 +28,4 @@ namespace Desdemona
     };
 }
 
-#endif /* #ifndef HUMANPLAYER_H */
+#endif /* #ifndef RANDOMPLAYER_H */

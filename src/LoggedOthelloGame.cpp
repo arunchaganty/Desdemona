@@ -24,6 +24,13 @@ LoggedOthelloGame::~LoggedOthelloGame()
 
 void LoggedOthelloGame::postPlayActions( Move& move )
 {
-    log << (char) ('a' + move.x) << move.y << endl;
+    if( move == Move::pass() )
+    {
+        log << (char) 'p' << endl;
+    }
+    else
+    {
+        log << (char) ('a' + move.x) << move.y << endl;
+    }
 }
 

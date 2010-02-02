@@ -58,15 +58,15 @@ namespace Desdemona
          * @param x X coordinate
          * @param y Y coordinate
          */
-        bool validateMove( Turn turn, int x, int y );
+        bool validateMove( Turn turn, int x, int y ) const;
 
         /**
          * Checks if a move on the board is valid
          * @param turn Color of piece to be played
          * @param x X coordinate
          * @param y Y coordinate
-         */
-        bool validateMove( Turn turn, Move move );
+         */ 
+        bool validateMove( Turn turn, Move move ) const;
 
         /**
          * Applies a move on the board
@@ -89,13 +89,20 @@ namespace Desdemona
          *
          * @return List of all valid moves
          */
-        list<Move> getValidMoves( Turn turn );
+        list<Move> getValidMoves( Turn turn ) const;
+
+        /**
+         * Prints board on console
+         * Can be overridden to replace output format
+         * @param turn - Prints out some indicator of whose turn it is
+         */
+        virtual void print( Turn turn ) const;
 
         /**
          * Prints board on console
          * Can be overridden to replace output format
          */
-        virtual void print();
+        virtual void print() const;
 
         private:
         /**
@@ -125,7 +132,14 @@ namespace Desdemona
 
         InvalidMoveException( const Move& move ): move(move) 
         {
-            snprintf( expl, MAX_MSG_LEN, "Invalid Move(%c%d)", ('a'+move.x), move.y );
+            if( move == Move::pass() )
+            {
+                snprintf( expl, MAX_MSG_LEN, "Invalid Move(pass)" );
+            }
+            else
+            {
+                snprintf( expl, MAX_MSG_LEN, "Invalid Move(%c%d)", ('a'+move.x), move.y );
+            }
         }
 
         const char* what() const throw ()

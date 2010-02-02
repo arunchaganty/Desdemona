@@ -15,7 +15,7 @@
 #include "OthelloGame.h"
 #include "LoggedOthelloGame.h"
 #include "OthelloPlayer.h"
-#include "HumanPlayer.h"
+#include "RandomPlayer.h"
 
 using namespace std;
 using namespace Desdemona;
@@ -49,8 +49,9 @@ int main( int argc, char* argv[] )
                 break;
             case 'h':
             default: /* '?' */
-                OthelloPlayer player = OthelloPlayer();
-                OthelloGame game( player, player );
+                OthelloPlayer player1 = OthelloPlayer( BLACK );
+                OthelloPlayer player2 = OthelloPlayer( RED );
+                OthelloGame game( player1, player2 );
                 game.printState();
 
                 fprintf( stderr, "Usage: %s [options] <bot-black> <bot-white>\n", argv[ 0 ] );
@@ -75,8 +76,9 @@ int main( int argc, char* argv[] )
         }
         else
         {
-            OthelloPlayer player = OthelloPlayer();
-            OthelloGame game( player, player );
+            OthelloPlayer player1 = OthelloPlayer( BLACK );
+            OthelloPlayer player2 = OthelloPlayer( RED );
+            OthelloGame game( player1, player2 );
             game.replayGame( filename );
         }
     }
@@ -103,8 +105,8 @@ int main( int argc, char* argv[] )
 
 void runTest()
 {
-    HumanPlayer hPlayer1 = HumanPlayer();
-    HumanPlayer hPlayer2 = HumanPlayer();
+    RandomPlayer hPlayer1 = RandomPlayer( BLACK );
+    RandomPlayer hPlayer2 = RandomPlayer( RED );
     OthelloPlayer& player1 = hPlayer1;
     OthelloPlayer& player2 = hPlayer2;
     LoggedOthelloGame game( "game.log", player1, player2 );

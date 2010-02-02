@@ -11,7 +11,7 @@ using namespace std;
 #include "Othello.h"
 using namespace Desdemona;
 
-bool Move::operator==( const Move& other )
+bool Move::operator==( const Move other ) const
 {
     return ( this->x == other.x ) && ( this->y == other.y );
 }

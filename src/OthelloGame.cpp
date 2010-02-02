@@ -42,7 +42,7 @@ void OthelloGame::makeMove( const Move& move )
 
 void OthelloGame::printState()
 {
-    board.print();
+    board.print( turn );
 }
 
 void OthelloGame::startGame()

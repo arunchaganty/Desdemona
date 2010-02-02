@@ -8,7 +8,8 @@
 #include "OthelloPlayer.h"
 using namespace Desdemona;
 
-OthelloPlayer::OthelloPlayer()
+OthelloPlayer::OthelloPlayer( Turn turn ) :
+    turn( turn )
 {
 }
 

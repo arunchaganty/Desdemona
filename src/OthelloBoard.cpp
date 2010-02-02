@@ -65,7 +65,7 @@ OthelloBoard& OthelloBoard::operator=( const OthelloBoard& other )
     return *this;
 }
 
-bool OthelloBoard::validateMove( Turn turn, int x, int y )
+bool OthelloBoard::validateMove( Turn turn, int x, int y ) const
 {
     // Check if it's a valid position
     if ( !validPosition( x, y ) )
@@ -109,7 +109,7 @@ bool OthelloBoard::validateMove( Turn turn, int x, int y )
     return false;
 }
 
-bool OthelloBoard::validateMove( Turn turn, Move move )
+bool OthelloBoard::validateMove( Turn turn, Move move ) const
 {
     return validateMove( turn, move.x, move.y );
 }
@@ -182,11 +182,11 @@ void OthelloBoard::makeMove( Turn turn, Move move )
     makeMove( turn, move.x, move.y );
 }
 
-void OthelloBoard::print()
+void OthelloBoard::print( Turn turn ) const 
 {
     for( int j=0; j<19; j++ ) printf( "=" ); printf( "\n" );
 
-    printf( "| |" );
+    printf( "|%c|", ( turn == BLACK ) ? 'X' : ( ( turn == RED ) ? 'O' : ' ' ) ); 
     for (int i=0; i<BOARD_SIZE; i++)
     {
         printf( "%d|", i );
@@ -219,12 +219,17 @@ void OthelloBoard::print()
     printf( "Blacks: %02d Reds: %02d\n", blackCount, redCount );
 }
 
+void OthelloBoard::print() const 
+{
+    print( EMPTY );
+}
+
 bool inline OthelloBoard::validPosition( int x, int y )
 {
     return ( ( x >= 0 ) && ( x < BOARD_SIZE ) && ( y >= 0 ) && ( y < BOARD_SIZE ) );
 }
 
-list<Move> OthelloBoard::getValidMoves( Turn turn )
+list<Move> OthelloBoard::getValidMoves( Turn turn ) const
 {
     list<Move> moves;
 
