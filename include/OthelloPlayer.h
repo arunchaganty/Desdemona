@@ -21,7 +21,7 @@ namespace Desdemona
              */
             OthelloPlayer();
 
-            virtual Move play( const OthelloBoard& board ) =0;
+            virtual Move play( const OthelloBoard& board );
 
         private:
 

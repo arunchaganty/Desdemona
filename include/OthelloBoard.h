@@ -93,6 +93,19 @@ namespace Desdemona
          * Internal storage for the positions
          */
         Coin board[BOARD_SIZE][BOARD_SIZE];
+        /**
+         * Count of black coins. Present to help player writers
+         */
+        int blackCount;
+        /**
+         * Count of red coins. Present to help player writers
+         */
+        int redCount;
+
+        /**
+         * Allow players to inspect the board
+         */
+        friend class OthelloPlayer;
     };
 
     class InvalidMoveException: public exception

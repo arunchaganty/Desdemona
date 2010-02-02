@@ -12,3 +12,8 @@ OthelloPlayer::OthelloPlayer()
 {
 }
 
+Move OthelloPlayer::play( const OthelloBoard& board )
+{
+    return Move::empty();
+}
+

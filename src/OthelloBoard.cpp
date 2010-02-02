@@ -10,11 +10,6 @@
 using namespace Desdemona;
 using namespace std;
 
-bool inline OthelloBoard::validPosition( int x, int y )
-{
-    return ( ( x >= 0 ) && ( x < BOARD_SIZE ) && ( y >= 0 ) && ( y < BOARD_SIZE ) );
-}
-
 OthelloBoard::OthelloBoard()
 {
     for( int i = 0; i<BOARD_SIZE; i++ )
@@ -35,6 +30,9 @@ OthelloBoard::OthelloBoard()
             }
         }
     }
+
+    blackCount = 2;
+    redCount = 2;
 }
 
 OthelloBoard::~OthelloBoard()
@@ -124,6 +122,8 @@ void OthelloBoard::makeMove( Turn turn, int x, int y )
         throw InvalidMoveException( Move( x, y ) );
     }
 
+    // Initial count is 1 for the new piece added
+    int flippedCoins = 1;
     board[ x ][ y ] = turn;
     // Scan in all directions to see if there is a sequence of pieces of
     // the opposite color followed by atleast one piece of the same color 
@@ -152,6 +152,8 @@ void OthelloBoard::makeMove( Turn turn, int x, int y )
                     break;
                 }
             }
+
+            // If a valid move was found, actually flip coins
             if( valid )
             {
                 for( int k=1; validPosition( x+k*i, y+k*j ); k++ )
@@ -163,12 +165,16 @@ void OthelloBoard::makeMove( Turn turn, int x, int y )
                     else if( board[ x+k*i ][ y+k*j ] == turn )
                     {
                         valid = true;
+                        flippedCoins += (k-1);
                         break;
                     }
                 }
             }
         }
     }
+    // Update the counts
+    blackCount += ( turn == BLACK ) ? flippedCoins : -(flippedCoins-1);
+    redCount += ( turn == RED ) ? flippedCoins : -(flippedCoins-1);
 }
 
 void OthelloBoard::makeMove( Turn turn, Move move )
@@ -178,14 +184,14 @@ void OthelloBoard::makeMove( Turn turn, Move move )
 
 void OthelloBoard::print()
 {
-    for(int j=0;j<19;j++)printf("="); printf("\n");
+    for( int j=0; j<19; j++ ) printf( "=" ); printf( "\n" );
 
-    printf("| |");
+    printf( "| |" );
     for (int i=0; i<BOARD_SIZE; i++)
     {
-        printf("%d|",i);
+        printf( "%d|", i );
     }
-    printf("\n");
+    printf( "\n" );
 
     for (int i=0; i<BOARD_SIZE; i++)
     {
@@ -209,7 +215,12 @@ void OthelloBoard::print()
         }
         printf("\n");
     }
-    for(int j=0;j<19;j++)printf("="); printf("\n");
+    for( int j=0; j<19; j++ ) printf( "=" ); printf( "\n" );
+    printf( "Blacks: %02d Reds: %02d\n", blackCount, redCount );
 }
 
+bool inline OthelloBoard::validPosition( int x, int y )
+{
+    return ( ( x >= 0 ) && ( x < BOARD_SIZE ) && ( y >= 0 ) && ( y < BOARD_SIZE ) );
+}
 

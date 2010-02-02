@@ -13,7 +13,7 @@
 
 #include "Othello.h"
 #include "OthelloGame.h"
-#include "DummyPlayer.h"
+#include "OthelloPlayer.h"
 #include "HumanPlayer.h"
 
 using namespace std;
@@ -48,7 +48,7 @@ int main( int argc, char* argv[] )
                 break;
             case 'h':
             default: /* '?' */
-                DummyPlayer player = DummyPlayer();
+                OthelloPlayer player = OthelloPlayer();
                 OthelloGame game( player, player );
                 game.printState();
 
@@ -74,7 +74,7 @@ int main( int argc, char* argv[] )
         }
         else
         {
-            DummyPlayer player = DummyPlayer();
+            OthelloPlayer player = OthelloPlayer();
             OthelloGame game( player, player );
             game.replayGame( filename );
         }
@@ -102,8 +102,11 @@ int main( int argc, char* argv[] )
 
 void runTest()
 {
-    HumanPlayer player = HumanPlayer();
-    OthelloGame game( player, player );
+    HumanPlayer hPlayer1 = HumanPlayer();
+    HumanPlayer hPlayer2 = HumanPlayer();
+    OthelloPlayer& player1 = hPlayer1;
+    OthelloPlayer& player2 = hPlayer2;
+    OthelloGame game( player1, player2 );
 
     game.printState();
     game.startGame();
