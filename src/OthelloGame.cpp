@@ -49,7 +49,9 @@ void OthelloGame::startGame()
 {
     while( !isGameOver() )
     {
-        Move move( 0,0 );
+        Move move = Move::empty();
+
+        printState();
         // Make a copy of the board for security purposes
         OthelloBoard boardCopy = board;
         if( turn == BLACK )

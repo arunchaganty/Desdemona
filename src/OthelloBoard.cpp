@@ -10,6 +10,11 @@
 using namespace Desdemona;
 using namespace std;
 
+bool inline OthelloBoard::validPosition( int x, int y )
+{
+    return ( ( x >= 0 ) && ( x < BOARD_SIZE ) && ( y >= 0 ) && ( y < BOARD_SIZE ) );
+}
+
 OthelloBoard::OthelloBoard()
 {
     for( int i = 0; i<BOARD_SIZE; i++ )
@@ -62,9 +67,108 @@ OthelloBoard& OthelloBoard::operator=( const OthelloBoard& other )
     return *this;
 }
 
+bool OthelloBoard::validateMove( Turn turn, int x, int y )
+{
+    // Check if it's a valid position
+    if ( !validPosition( x, y ) )
+    {
+        return false;
+    }
+
+    // Ensure that the current box is empty
+    if ( !( board[x][y] == EMPTY ) )
+    {
+        return false;
+    }
+
+    // Now scan in all directions to see if there is a sequence of pieces of
+    // the opposite color followed by atleast one piece of the same color 
+    for( int i = -1; i <= 1; i++ )
+    {
+        for( int j = -1; j <= 1; j++ )
+        {
+            // Ignore one case
+            if( i == 0 && j == 0 ) continue;
+
+            // Only explore directions which begin with a coin of opposite color
+            if ( board[ x+i ][ y+j ] != other( turn ) ) continue;
+
+            for( int k=1; validPosition( x+k*i, y+k*j ); k++ )
+            {
+                if( board[ x+k*i ][ y+k*j ] == other( turn ) ) continue;
+                else if( board[ x+k*i ][ y+k*j ] == turn )
+                {
+                    return true;
+                }
+                else if( board[ x+k*i ][ y+k*j ] == EMPTY )
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool OthelloBoard::validateMove( Turn turn, Move move )
+{
+    return validateMove( turn, move.x, move.y );
+}
+
+
 void OthelloBoard::makeMove( Turn turn, int x, int y )
 {
-    //
+    if ( !validateMove( turn, x, y ) )
+    {
+        throw InvalidMoveException( Move( x, y ) );
+    }
+
+    board[ x ][ y ] = turn;
+    // Scan in all directions to see if there is a sequence of pieces of
+    // the opposite color followed by atleast one piece of the same color 
+    // If there is, flip all such coins.
+    for( int i = -1; i <= 1; i++ )
+    {
+        for( int j = -1; j <= 1; j++ )
+        {
+            // Ignore one case
+            if( i == 0 && j == 0 ) continue;
+
+            // Only explore directions which begin with a coin of opposite color
+            if ( board[ x+i ][ y+j ] != other( turn ) ) continue;
+
+            bool valid = false;
+            for( int k=1; validPosition( x+k*i, y+k*j ); k++ )
+            {
+                if( board[ x+k*i ][ y+k*j ] == other( turn ) ) continue;
+                else if( board[ x+k*i ][ y+k*j ] == turn )
+                {
+                    valid = true;
+                    break;
+                }
+                else if( board[ x+k*i ][ y+k*j ] == EMPTY )
+                {
+                    break;
+                }
+            }
+            if( valid )
+            {
+                for( int k=1; validPosition( x+k*i, y+k*j ); k++ )
+                {
+                    if( board[ x+k*i ][ y+k*j ] == other( turn ) )
+                    {
+                        board[ x+k*i ][ y+k*j ] = turn;
+                    }
+                    else if( board[ x+k*i ][ y+k*j ] == turn )
+                    {
+                        valid = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 void OthelloBoard::makeMove( Turn turn, Move move )

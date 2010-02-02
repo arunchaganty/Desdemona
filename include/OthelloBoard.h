@@ -21,6 +21,10 @@ namespace Desdemona
     class OthelloBoard
     {
         static const int BOARD_SIZE = 8;
+        /**
+         * Function to check if position is within the board
+         */
+        static bool inline validPosition( int x, int y );
 
         public:
 
@@ -46,6 +50,22 @@ namespace Desdemona
          * @return Reference on initialisated object.
          */
         OthelloBoard& operator=( const OthelloBoard& other );
+
+        /**
+         * Checks if a move on the board is valid
+         * @param turn Color of piece to be played
+         * @param x X coordinate
+         * @param y Y coordinate
+         */
+        bool validateMove( Turn turn, int x, int y );
+
+        /**
+         * Checks if a move on the board is valid
+         * @param turn Color of piece to be played
+         * @param x X coordinate
+         * @param y Y coordinate
+         */
+        bool validateMove( Turn turn, Move move );
 
         /**
          * Applies a move on the board

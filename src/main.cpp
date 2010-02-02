@@ -14,6 +14,7 @@
 #include "Othello.h"
 #include "OthelloGame.h"
 #include "DummyPlayer.h"
+#include "HumanPlayer.h"
 
 using namespace std;
 using namespace Desdemona;
@@ -23,8 +24,11 @@ extern int optind, opterr;
 enum Mode
 {
     NORMAL=0,
-    REPLAY=1
+    REPLAY=1,
+    TEST=2
 };
+
+void runTest();
 
 int main( int argc, char* argv[] )
 {
@@ -32,12 +36,16 @@ int main( int argc, char* argv[] )
     Mode mode = NORMAL;
 
     // Parse command line options 
-    while( ( opt = getopt( argc, argv, "rh" ) ) != -1 )
+    while( ( opt = getopt( argc, argv, "trh" ) ) != -1 )
     {
         switch( opt ) 
         {
+            case 't':
+                mode = TEST;
+                break;
             case 'r':
                 mode = REPLAY;
+                break;
             case 'h':
             default: /* '?' */
                 DummyPlayer player = DummyPlayer();
@@ -77,6 +85,10 @@ int main( int argc, char* argv[] )
         string whiteBotName = string( argv[ optind + 1 ] );
         // Validate input
     }
+    else if( mode == TEST )
+    {
+        runTest();
+    }
     else
     {
         fprintf( stderr, "Bots not specified.\n" );
@@ -88,4 +100,12 @@ int main( int argc, char* argv[] )
     return 0;
 }
 
+void runTest()
+{
+    HumanPlayer player = HumanPlayer();
+    OthelloGame game( player, player );
+
+    game.printState();
+    game.startGame();
+}
 

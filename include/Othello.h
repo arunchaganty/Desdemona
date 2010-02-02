@@ -8,6 +8,7 @@
  */
 
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 namespace Desdemona
@@ -46,7 +47,7 @@ namespace Desdemona
              * @param x - X Coordinate
              * @param y - Y Coordinate
              */
-            Move( int x, int y ): x(x), y(y) {};
+            Move( int x, int y ): x(x), y(y) {}
 
             /**
              * Equality
@@ -58,6 +59,21 @@ namespace Desdemona
             static Move empty()
             {
                 return Move( 0, 0 );
+            }
+
+            static Move parse( string moveStr )
+            {
+                int x;
+                int y;
+
+                if( moveStr.length() != 2 )
+                {
+                    throw exception();
+                }
+                x = moveStr[0] - 'a';
+                y = moveStr[1] - '0';
+
+                return Move( x, y );
             }
 
             /**
