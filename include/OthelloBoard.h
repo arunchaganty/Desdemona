@@ -12,6 +12,7 @@
 #include <string>
 #include <cstdlib>
 #include <cstdio>
+#include <list>
 using namespace std;
 
 namespace Desdemona
@@ -81,6 +82,14 @@ namespace Desdemona
          * @param move Move data structure
          */
         void makeMove( Turn turn, Move move );
+
+        /**
+         * Gets all valid moves that can be made by a particular turn
+         * @param turn Color of piece to be played
+         *
+         * @return List of all valid moves
+         */
+        list<Move> getValidMoves( Turn turn );
 
         /**
          * Prints board on console

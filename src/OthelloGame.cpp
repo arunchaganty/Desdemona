@@ -52,17 +52,30 @@ void OthelloGame::startGame()
         Move move = Move::empty();
 
         printState();
-        // Make a copy of the board for security purposes
-        OthelloBoard boardCopy = board;
-        if( turn == BLACK )
+
+        if( !board.getValidMoves( turn ).empty() )
         {
-            move = player1.play( boardCopy );
+            // Make a copy of the board for security purposes
+            OthelloBoard boardCopy = board;
+            if( turn == BLACK )
+            {
+                move = player1.play( boardCopy );
+            }
+            else if( turn == RED )
+            {
+                move = player2.play( boardCopy );
+            }
+            makeMove( move );
+
+            // Do any actions
+            postPlayActions( move );
         }
-        else if( turn == RED )
+        else
         {
-            move = player2.play( boardCopy );
+            Move passMove = Move::pass();
+            postPlayActions( passMove );
         }
-        makeMove( move );
+
         // Change the turn
         turn = other( turn );
     }
@@ -86,6 +99,12 @@ void OthelloGame::replayGame( string filename )
 
 bool OthelloGame::isGameOver()
 {
-    return false;
+    // The game is over when there are no valid moves remaining
+    return ( board.getValidMoves( turn ).empty() && board.getValidMoves( other( turn ) ).empty() );
+}
+
+void OthelloGame::postPlayActions( Move& move )
+{
+
 }
 

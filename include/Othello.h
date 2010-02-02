@@ -61,6 +61,11 @@ namespace Desdemona
                 return Move( 0, 0 );
             }
 
+            static Move pass()
+            {
+                return Move( -1, -1 );
+            }
+
             static Move parse( string moveStr )
             {
                 int x;

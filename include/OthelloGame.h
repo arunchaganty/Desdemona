@@ -31,11 +31,17 @@ namespace Desdemona
             void startGame();
             void replayGame( string filename );
 
-        private:
+        protected:
             OthelloPlayer& player1;
             OthelloPlayer& player2;
             OthelloBoard board;
             Turn turn;
+
+            /**
+             * Allows inheriters to define actions that should be performed
+             * after a move is played.
+             */
+            virtual void postPlayActions( Move& move );
 
             bool isGameOver( );
     };

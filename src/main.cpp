@@ -13,6 +13,7 @@
 
 #include "Othello.h"
 #include "OthelloGame.h"
+#include "LoggedOthelloGame.h"
 #include "OthelloPlayer.h"
 #include "HumanPlayer.h"
 
@@ -106,7 +107,7 @@ void runTest()
     HumanPlayer hPlayer2 = HumanPlayer();
     OthelloPlayer& player1 = hPlayer1;
     OthelloPlayer& player2 = hPlayer2;
-    OthelloGame game( player1, player2 );
+    LoggedOthelloGame game( "game.log", player1, player2 );
 
     game.printState();
     game.startGame();

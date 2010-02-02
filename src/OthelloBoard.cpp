@@ -224,3 +224,24 @@ bool inline OthelloBoard::validPosition( int x, int y )
     return ( ( x >= 0 ) && ( x < BOARD_SIZE ) && ( y >= 0 ) && ( y < BOARD_SIZE ) );
 }
 
+list<Move> OthelloBoard::getValidMoves( Turn turn )
+{
+    list<Move> moves;
+
+    // TODO: Refine to get better performance
+    // Brute force approach
+    for( int i = 0; i<BOARD_SIZE; i++ )
+    {
+        for( int j = 0; j<BOARD_SIZE; j++ )
+        {
+            if( validateMove( turn, i, j ) )
+            {
+                moves.push_back( Move( i, j ) );
+            }
+        }
+    }
+
+    return moves;
+}
+
+
