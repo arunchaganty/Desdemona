@@ -6,7 +6,9 @@
 ROOTDIR  = ../../
 include $(ROOTDIR)Makefile.inc
 
-BOT	= RandomBot
+LDFLAGS += -l$(ROOTDIR)lib/libOthello.so
+
+BOT	= MyBot
 
 
 all: ../$(BOT).so

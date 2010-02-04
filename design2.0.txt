@@ -6,8 +6,8 @@ Desdemona is an Othello competition framework created to allow students to play 
 Features:
 * Plug-in like functionality for each bot. Submitted bots are in a ".so" format.
     * Each bot must expose 2 functions:
-        * initialize()
-        * playMove()
+        * createBot
+        * destroyBot
 * Save and playback games
 * Console visualisation of the games (can be enabled)
 

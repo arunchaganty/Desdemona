@@ -13,7 +13,7 @@ DISTFILES=bin/desdemona tests/ doc/ README
 
 LDFLAGS += -ldl
 
-OTHELLO_LIB_OBJS=obj/Othello.o obj/OthelloBoard.o obj/LoggedOthelloGame.o obj/OthelloGame.o obj/OthelloPlayer.o obj/HumanPlayer.o
+OTHELLO_LIB_OBJS=obj/Othello.o obj/OthelloBoard.o obj/LoggedOthelloGame.o obj/OthelloGame.o obj/OthelloPlayer.o
 OBJS=obj/main.o $(OTHELLO_LIB_OBJS)
 
 all: $(TARGETS)

@@ -6,7 +6,7 @@
 ROOTDIR  = ../../
 include $(ROOTDIR)Makefile.inc
 
-BOT	= RandomBot
+BOT	= TuringBot
 
 
 all: ../$(BOT).so
