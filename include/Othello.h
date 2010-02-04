@@ -43,7 +43,6 @@ namespace Desdemona
             /**
              * Default constructor
              *
-             * @param player - Coin colour
              * @param x - X Coordinate
              * @param y - Y Coordinate
              */
@@ -92,6 +91,7 @@ namespace Desdemona
              * Input from a stream
              *
              * @param inp - Input stream
+             * @param move - Move taking input
              */
             friend istream& operator>>( istream& inp, Move& move );
 
@@ -99,6 +99,7 @@ namespace Desdemona
              * Output to a stream
              *
              * @param out - Output stream
+             * @param move - Move to be outputed
              */
             friend ostream& operator<<( ostream& out, const Move& move );
     };

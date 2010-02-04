@@ -63,8 +63,7 @@ namespace Desdemona
         /**
          * Checks if a move on the board is valid
          * @param turn Color of piece to be played
-         * @param x X coordinate
-         * @param y Y coordinate
+         * @param move X,Y coordinates
          */ 
         bool validateMove( Turn turn, Move move ) const;
 
