@@ -79,6 +79,8 @@ void OthelloGame::startGame()
         // Change the turn
         turn = other( turn );
     }
+    cout << "Game Over" << endl;
+    printState();
 }
 
 void OthelloGame::replayGame( string filename )

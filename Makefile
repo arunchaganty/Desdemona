@@ -5,13 +5,16 @@
 ROOTDIR=./
 include Makefile.inc
 
-TARGETS=bin/Desdemona
+TARGETS=bin/Desdemona lib/libOthello.so
 
 VERSION=0.1
 SRCFILES=include/ misc/ src/ tests/ Doxyfile Makefile README 
 DISTFILES=bin/desdemona tests/ doc/ README
 
-OBJS=obj/main.o obj/Othello.o obj/OthelloBoard.o obj/LoggedOthelloGame.o obj/OthelloGame.o obj/OthelloPlayer.o obj/HumanPlayer.o
+LDFLAGS += -ldl
+
+OTHELLO_LIB_OBJS=obj/Othello.o obj/OthelloBoard.o obj/LoggedOthelloGame.o obj/OthelloGame.o obj/OthelloPlayer.o obj/HumanPlayer.o
+OBJS=obj/main.o $(OTHELLO_LIB_OBJS)
 
 all: $(TARGETS)
 
@@ -19,14 +22,18 @@ bin/Desdemona: ${OBJS}
 	if [ ! -e lib ]; then mkdir lib; fi;
 	$(CC) $(LDFLAGS) $^ -o $@
 
+lib/libOthello.so: $(OTHELLO_LIB_OBJS)
+	if [ ! -e lib ]; then mkdir lib; fi;
+	$(CC) $(LDFLAGS) -shared -Wl,-soname,$@.1 -o $@ $^ -lc
+
 # Pattern to build obj files from src files
 ${OBJS}: obj/%.o : src/%.cpp 
 	if [ ! -e obj ]; then mkdir obj; fi;
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 bots:
-	${ECHO} Looking into subdir $@ 
-	cd $@; ${MAKE}
+	echo Looking into subdir $@ 
+	cd $@; make
 
 src-dist: 
 	rm -rf Desdemona-src-$(VERSION)

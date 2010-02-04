@@ -9,6 +9,7 @@
 #include "OthelloBoard.h"
 #include "OthelloPlayer.h"
 #include <cstdlib>
+#include <ctime>
 using namespace std;
 using namespace Desdemona;
 
@@ -17,8 +18,6 @@ class RandomBot: public OthelloPlayer
     public:
         /**
          * Initialisation routines here
-         * This could do anything from open up a cache of "best moves" to
-         * spawning a background processing thread. 
          */
         RandomBot( Turn turn );
         virtual ~RandomBot() {}
@@ -33,6 +32,9 @@ class RandomBot: public OthelloPlayer
 RandomBot::RandomBot( Turn turn ) :
     OthelloPlayer( turn )
 {
+    time_t t;
+    time( &t );
+    srand( t );
 }
 
 Move RandomBot::play( const OthelloBoard& board )

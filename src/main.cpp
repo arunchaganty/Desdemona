@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <cstdio>
+#include <dlfcn.h>
 #include <string>
 
 #include "Othello.h"
@@ -30,6 +31,10 @@ enum Mode
 };
 
 void runTest();
+OthelloPlayer& loadBot();
+OthelloPlayer& loadBot( string botPath, Turn turn );
+
+typedef OthelloPlayer* ( *CreateBotFn ) ( Turn turn );
 
 int main( int argc, char* argv[] )
 {
@@ -84,9 +89,17 @@ int main( int argc, char* argv[] )
     }
     else if( mode == NORMAL && ( argc - optind == 2 ) )
     {
-        string blackBotName = string( argv[ optind + 0 ] );
-        string whiteBotName = string( argv[ optind + 1 ] );
-        // Validate input
+        string blackBotPath = string( argv[ optind + 0 ] );
+        string redBotPath = string( argv[ optind + 1 ] );
+
+        // Load bots
+        OthelloPlayer& player1 = loadBot( blackBotPath, BLACK );
+        OthelloPlayer& player2 = loadBot( redBotPath, RED );
+        LoggedOthelloGame game( "game.log", player1, player2 );
+
+        game.printState();
+        game.startGame();
+
     }
     else if( mode == TEST )
     {
@@ -113,5 +126,47 @@ void runTest()
 
     game.printState();
     game.startGame();
+}
+
+OthelloPlayer& loadBot( string botPath, Turn turn )
+{
+    // First of all open paths to the bots
+    void* botMod;
+    OthelloPlayer* bot;
+    CreateBotFn createBotFn;
+
+    cerr << "Loading libOthello..." << endl;
+    botMod = dlopen( "lib/libOthello.so", RTLD_NOW );
+    if( botMod == NULL )
+    {
+        char* error = dlerror();
+        cerr << error << endl;
+        // "Could not load bot";
+        throw exception();
+        //throw InvalidBotModule( "Could not load bot" );
+    }
+
+    cerr << "Loading bot..." << endl;
+    botMod = dlopen( botPath.c_str(), RTLD_NOW );
+    if( botMod == NULL )
+    {
+        char* error = dlerror();
+        cerr << error << endl;
+        // "Could not load bot";
+        throw exception();
+        //throw InvalidBotModule( "Could not load bot" );
+    }
+
+    createBotFn = (CreateBotFn) dlsym( botMod, "createBot" );
+    if( createBotFn == NULL )
+    {
+        char* error = dlerror();
+        cerr << error << endl;
+        throw exception();
+    }
+
+    bot = createBotFn( turn );
+
+    return *bot;
 }
 
