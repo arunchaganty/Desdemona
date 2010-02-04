@@ -15,7 +15,7 @@
 #include "OthelloGame.h"
 #include "LoggedOthelloGame.h"
 #include "OthelloPlayer.h"
-#include "RandomPlayer.h"
+#include "HumanPlayer.h"
 
 using namespace std;
 using namespace Desdemona;
@@ -105,8 +105,8 @@ int main( int argc, char* argv[] )
 
 void runTest()
 {
-    RandomPlayer hPlayer1 = RandomPlayer( BLACK );
-    RandomPlayer hPlayer2 = RandomPlayer( RED );
+    HumanPlayer hPlayer1 = HumanPlayer( BLACK );
+    HumanPlayer hPlayer2 = HumanPlayer( RED );
     OthelloPlayer& player1 = hPlayer1;
     OthelloPlayer& player2 = hPlayer2;
     LoggedOthelloGame game( "game.log", player1, player2 );

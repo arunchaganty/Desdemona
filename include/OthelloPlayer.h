@@ -21,6 +21,11 @@ namespace Desdemona
              * Default constructor
              */
             OthelloPlayer( Turn turn );
+            
+            /**
+             * Default destructor
+             */
+            virtual ~OthelloPlayer( ) {}
 
             virtual Move play( const OthelloBoard& board );
 

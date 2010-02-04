@@ -1,4 +1,9 @@
+doc/
+obj/
+bin/
+lib/
 *.swp
 *.swo
 *.o
+*.so
 *~
