@@ -15,34 +15,51 @@ using namespace std;
 using namespace Desdemona;
 
 /**
- * @brief DummyPlayer Class that makes dummy moves
+ * @brief TuringBot Human player
  * @author Arun Tejasvi Chaganty <arunchaganty@gmail.com>
  * @date 2010-02-01
+ * If you were a computer program, a human player acted just like a bot, isn't
+ * he/she a bot?
  */
-class HumanPlayer: public OthelloPlayer
+class TuringBot: public OthelloPlayer
 {
     public:
 
         /**
          * Default constructor
          */
-        HumanPlayer( Turn turn );
-        virtual ~HumanPlayer();
+        TuringBot( Turn turn );
+        virtual ~TuringBot() {}
         Move play( const OthelloBoard& board );
 
     private:
 
 };
 
-HumanPlayer::HumanPlayer( Turn turn ):
+TuringBot::TuringBot( Turn turn ):
     OthelloPlayer( turn )
 {
 }
 
-Move HumanPlayer::play( const OthelloBoard& board )
+Move TuringBot::play( const OthelloBoard& board )
 {
     string move;
     cin >> move;
     return Move::parse( move );
 }
+
+// The following lines are _very_ important to create a bot module for Desdemona
+
+extern "C" {
+    OthelloPlayer* createBot( Turn turn )
+    {
+        return new TuringBot( turn );
+    }
+
+    void destroyBot( OthelloPlayer* bot )
+    {
+        delete bot;
+    }
+}
+
 

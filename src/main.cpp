@@ -16,7 +16,6 @@
 #include "OthelloGame.h"
 #include "LoggedOthelloGame.h"
 #include "OthelloPlayer.h"
-#include "HumanPlayer.h"
 
 using namespace std;
 using namespace Desdemona;
@@ -31,6 +30,7 @@ enum Mode
 };
 
 void runTest();
+void loadInit();
 OthelloPlayer& loadBot();
 OthelloPlayer& loadBot( string botPath, Turn turn );
 
@@ -40,6 +40,8 @@ int main( int argc, char* argv[] )
 {
     int opt;
     Mode mode = NORMAL;
+
+    loadInit();
 
     // Parse command line options 
     while( ( opt = getopt( argc, argv, "trh" ) ) != -1 )
@@ -103,7 +105,7 @@ int main( int argc, char* argv[] )
     }
     else if( mode == TEST )
     {
-        runTest();
+        //runTest();
     }
     else
     {
@@ -116,35 +118,22 @@ int main( int argc, char* argv[] )
     return 0;
 }
 
-void runTest()
+void loadInit()
 {
-    HumanPlayer hPlayer1 = HumanPlayer( BLACK );
-    HumanPlayer hPlayer2 = HumanPlayer( RED );
-    OthelloPlayer& player1 = hPlayer1;
-    OthelloPlayer& player2 = hPlayer2;
-    LoggedOthelloGame game( "game.log", player1, player2 );
-
-    game.printState();
-    game.startGame();
+    cerr << "Loading libOthello..." << endl;
+    if( (dlopen( "lib/libOthello.so", RTLD_NOW) == NULL ) )
+    {
+        char* error = dlerror();
+        cerr << error << endl;
+        throw exception();
+    }
 }
 
 OthelloPlayer& loadBot( string botPath, Turn turn )
 {
-    // First of all open paths to the bots
     void* botMod;
     OthelloPlayer* bot;
     CreateBotFn createBotFn;
-
-    cerr << "Loading libOthello..." << endl;
-    botMod = dlopen( "lib/libOthello.so", RTLD_NOW );
-    if( botMod == NULL )
-    {
-        char* error = dlerror();
-        cerr << error << endl;
-        // "Could not load bot";
-        throw exception();
-        //throw InvalidBotModule( "Could not load bot" );
-    }
 
     cerr << "Loading bot..." << endl;
     botMod = dlopen( botPath.c_str(), RTLD_NOW );
