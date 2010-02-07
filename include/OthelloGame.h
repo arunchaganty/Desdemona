@@ -28,7 +28,11 @@ namespace Desdemona
             void makeMove( const Move& move );
 
             void printState();
-            void startGame();
+            /**
+             * Play a game
+             * @return - Winner of the game
+             */
+            Turn startGame();
             void replayGame( string filename );
 
         protected:
@@ -48,11 +52,34 @@ namespace Desdemona
 
     class TimeoutException: public exception
     {
-        const char* what() 
-        {
-            return "Bot timed out";
-        }
+        public:
+            const OthelloPlayer& player;
+
+            TimeoutException( const OthelloPlayer& player ) throw():
+                player( player ) {}
+            ~TimeoutException() throw() {}
+
+            const char* what() 
+            {
+                return "Player timed out";
+            }
     };
+
+    class BotInvalidMoveException: public InvalidMoveException
+    {
+        public:
+            const OthelloPlayer& player;
+
+            BotInvalidMoveException( const OthelloPlayer& player, const Move& move ) throw():
+                InvalidMoveException( move ), player( player ) {}
+            ~BotInvalidMoveException() throw() {}
+
+            const char* what() 
+            {
+                return "Player timed out";
+            }
+    };
+
 }
 
 #endif /* #ifndef OTHELLOGAME_H */

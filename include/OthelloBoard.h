@@ -7,13 +7,14 @@
  * @date 2010-01-27
  */
 
-#include "Othello.h"
 #include <exception>
 #include <string>
 #include <cstdlib>
 #include <cstdio>
 #include <list>
 using namespace std;
+
+#include "Othello.h"
 
 namespace Desdemona
 {
@@ -91,6 +92,16 @@ namespace Desdemona
         list<Move> getValidMoves( Turn turn ) const;
 
         /**
+         * Get a count of number of reds
+         */
+        int getRedCount();
+
+        /**
+         * Get a count of number of blacks
+         */
+        int getBlackCount();
+
+        /**
          * Prints board on console
          * Can be overridden to replace output format
          * @param turn - Prints out some indicator of whose turn it is
@@ -125,7 +136,6 @@ namespace Desdemona
 
     class InvalidMoveException: public exception
     {
-        static const int MAX_MSG_LEN = 50;
         public:
         Move move;
 
@@ -133,23 +143,29 @@ namespace Desdemona
         {
             if( move == Move::pass() )
             {
-                snprintf( expl, MAX_MSG_LEN, "Invalid Move(pass)" );
+                expl = "Invalid Move(pass)";
             }
             else
             {
-                snprintf( expl, MAX_MSG_LEN, "Invalid Move(%c%d)", ('a'+move.x), move.y );
+                char posID[3];
+                posID[0] = (char) ('a'+move.x);
+                posID[1] = (char) ('0'+move.y);
+                posID[2] = '\0';
+
+                expl = "Invalid Move(" + string(posID) + ")";
             }
         }
 
+        ~InvalidMoveException() throw() {}
+
         const char* what() const throw ()
         {
-            return expl;
+            return expl.c_str();
         }
 
         private:
-            char expl[MAX_MSG_LEN];
+            string expl;
     };
-
 }
 
 #endif /* #ifndef OTHELLOBOARD_H */

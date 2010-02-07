@@ -9,13 +9,13 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <cstdio>
-#include <dlfcn.h>
 #include <string>
 
 #include "Othello.h"
 #include "OthelloGame.h"
 #include "LoggedOthelloGame.h"
 #include "OthelloPlayer.h"
+#include "botLoader.h"
 
 using namespace std;
 using namespace Desdemona;
@@ -29,12 +29,7 @@ enum Mode
     TEST=2
 };
 
-void runTest();
-void loadInit();
-OthelloPlayer& loadBot();
-OthelloPlayer& loadBot( string botPath, Turn turn );
-
-typedef OthelloPlayer* ( *CreateBotFn ) ( Turn turn );
+static void runGame( string blackBotPath, string redBotPath );
 
 int main( int argc, char* argv[] )
 {
@@ -94,17 +89,11 @@ int main( int argc, char* argv[] )
         string blackBotPath = string( argv[ optind + 0 ] );
         string redBotPath = string( argv[ optind + 1 ] );
 
-        // Load bots
-        OthelloPlayer& player1 = loadBot( blackBotPath, BLACK );
-        OthelloPlayer& player2 = loadBot( redBotPath, RED );
-        LoggedOthelloGame game( "game.log", player1, player2 );
-
-        game.printState();
-        game.startGame();
-
+        runGame( blackBotPath, redBotPath );
     }
     else if( mode == TEST )
     {
+        // Currently does nothing
         //runTest();
     }
     else
@@ -118,44 +107,45 @@ int main( int argc, char* argv[] )
     return 0;
 }
 
-void loadInit()
+static void runGame( string blackBotPath, string redBotPath )
 {
-    cerr << "Loading libOthello..." << endl;
-    if( (dlopen( "lib/libOthello.so", RTLD_NOW) == NULL ) )
+    Turn winner;
+
+    // Load bots
+    OthelloPlayer& player1 = loadBot( blackBotPath, BLACK );
+    OthelloPlayer& player2 = loadBot( redBotPath, RED );
+    LoggedOthelloGame game( "game.log", player1, player2 );
+
+    game.printState();
+
+    try
     {
-        char* error = dlerror();
-        cerr << error << endl;
-        throw exception();
+        winner = game.startGame();
+
+        if( winner == EMPTY )
+        {
+            cout << "[Draw]" << endl;
+        }
+        else
+        {
+            string playerStr = ( winner == BLACK ) ? "Black" : "Red";
+            cout << "[Win]: " + playerStr << endl;
+        }
     }
-}
-
-OthelloPlayer& loadBot( string botPath, Turn turn )
-{
-    void* botMod;
-    OthelloPlayer* bot;
-    CreateBotFn createBotFn;
-
-    cerr << "Loading bot..." << endl;
-    botMod = dlopen( botPath.c_str(), RTLD_NOW );
-    if( botMod == NULL )
+    catch( BotInvalidMoveException& e )
     {
-        char* error = dlerror();
-        cerr << error << endl;
-        // "Could not load bot";
-        throw exception();
-        //throw InvalidBotModule( "Could not load bot" );
+        string playerStr = (e.player.turn == BLACK) ? "Black" : "Red" ;
+        cout << "[Invalid Move]: " << playerStr << endl;
     }
-
-    createBotFn = (CreateBotFn) dlsym( botMod, "createBot" );
-    if( createBotFn == NULL )
+    catch( TimeoutException& e )
     {
-        char* error = dlerror();
-        cerr << error << endl;
-        throw exception();
+        string playerStr = (e.player.turn == BLACK) ? "Black" : "Red" ;
+        cout << "[Timeout]: " << playerStr << endl;
     }
-
-    bot = createBotFn( turn );
-
-    return *bot;
+    catch( BotException& e )
+    {
+        string playerStr = (e.player.turn == BLACK) ? "Black" : "Red" ;
+        cout << "[Unhandled Exception]: " << playerStr << endl;
+    }
 }
 

@@ -61,13 +61,13 @@ void OthelloGame::printState()
     board.print( turn );
 }
 
-void OthelloGame::startGame()
+Turn OthelloGame::startGame()
 {
-    while( !isGameOver() )
+    printState();
+
+    do
     {
         Move move = Move::empty();
-
-        printState();
 
         if( !board.getValidMoves( turn ).empty() )
         {
@@ -75,26 +75,27 @@ void OthelloGame::startGame()
             OthelloBoard boardCopy = board;
 
             // Spawn a thread to set up an execution environment for the player.
-            if( turn == BLACK )
+            try
             {
-                try
+                if( turn == BLACK )
                 {
-                    move = launchEnvironment( player1, boardCopy );
+                        move = launchEnvironment( player1, boardCopy );
+                        
                 }
-                catch(exception& e)
+                else if( turn == RED )
                 {
-                    cout << e.what() << endl;
+                    move = launchEnvironment( player2, boardCopy );
                 }
-                    
-            }
-            else if( turn == RED )
-            {
-                move = launchEnvironment( player2, boardCopy );
-            }
-            makeMove( move );
+                makeMove( move );
 
-            // Do any actions
-            postPlayActions( move );
+                // Do any actions
+                postPlayActions( move );
+            }
+            catch( InvalidMoveException& e )
+            {
+                OthelloPlayer& player = (turn == BLACK) ? player1 : player2;
+                throw BotInvalidMoveException( player, e.move );
+            }
         }
         else
         {
@@ -104,9 +105,23 @@ void OthelloGame::startGame()
 
         // Change the turn
         turn = other( turn );
-    }
+        printState();
+    } while( !isGameOver() );
+
     cout << "Game Over" << endl;
-    printState();
+
+    if( board.getRedCount() > board.getBlackCount() )
+    {
+        return RED;
+    }
+    else if( board.getRedCount() < board.getBlackCount() )
+    {
+        return BLACK;
+    }
+    else 
+    {
+        return EMPTY; // Alias for a draw
+    }
 }
 
 void OthelloGame::replayGame( string filename )
@@ -266,10 +281,10 @@ static Move launchEnvironment( OthelloPlayer& player, OthelloBoard& board )
     switch( environ.flags )
     {
         case EFLAGS_TIMEOUT:
-            throw TimeoutException();
+            throw TimeoutException( environ.player );
             break;
         case EFLAGS_UNHANDLED:
-            throw BotException();
+            throw BotException( environ.player );
             break;
         case EFLAGS_NONE:
         default:;

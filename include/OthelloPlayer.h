@@ -35,10 +35,15 @@ namespace Desdemona
 
     class BotException : public exception
     {
-        const char* what() const throw()
-        {
-            return "Bot threw an unhandled exception.";
-        }
+        public:
+            const OthelloPlayer& player;
+            BotException( const OthelloPlayer& player ) throw() :
+                player( player ) {}
+            ~BotException() throw() {}
+            const char* what() const throw()
+            {
+                return "Bot threw an unhandled exception.";
+            }
     };
 }
 
