@@ -11,7 +11,8 @@ VERSION=0.1
 SRCFILES=include/ misc/ src/ tests/ Doxyfile Makefile README 
 DISTFILES=bin/desdemona tests/ doc/ README
 
-LDFLAGS += -ldl
+CFLAGS += -pthread
+LDFLAGS += -ldl -lpthread -lrt -pthread
 
 OTHELLO_LIB_OBJS=obj/Othello.o obj/OthelloBoard.o obj/LoggedOthelloGame.o obj/OthelloGame.o obj/OthelloPlayer.o
 OBJS=obj/main.o $(OTHELLO_LIB_OBJS)

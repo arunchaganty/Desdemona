@@ -1,5 +1,5 @@
 Pending Tasks:
 * Exception Handling
-* Threading to enforce execution durations
-* Setting up a generic "outstream" to pipe output to something other than cout
+* Threading to enforce execution durations 
+* Setting up a generic "outstream" to pipe output to something other than cout (needed?)
 
