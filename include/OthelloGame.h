@@ -45,6 +45,14 @@ namespace Desdemona
 
             bool isGameOver( );
     };
+
+    class TimeoutException: public exception
+    {
+        const char* what() 
+        {
+            return "Bot timed out";
+        }
+    };
 }
 
 #endif /* #ifndef OTHELLOGAME_H */

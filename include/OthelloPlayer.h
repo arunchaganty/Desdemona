@@ -32,6 +32,14 @@ namespace Desdemona
         private:
 
     };
+
+    class BotException : public exception
+    {
+        const char* what() const throw()
+        {
+            return "Bot threw an unhandled exception.";
+        }
+    };
 }
 
 #endif /* #ifndef OTHELLOPLAYER_H */

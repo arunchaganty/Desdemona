@@ -16,23 +16,15 @@ using namespace std;
 #include "OthelloGame.h"
 using namespace Desdemona;
 
-/**
- * \struct BotEnvironment
- * Store arguments to be passed to thread
- */
-struct BotEnvironment
+// TODO: Make this defined in a config file somewhere
+#define BOT_TIMEOUT 2
+
+enum ExceptionFlags
 {
-    OthelloPlayer& player;
-    OthelloBoard& board;
-    Move& move;
-
-    BotEnvironment( OthelloPlayer& player, OthelloBoard& board, Move& move ) :
-        player( player ), board( board ), move( move ) {}
-
+    EFLAGS_NONE,
+    EFLAGS_TIMEOUT=0x1,
+    EFLAGS_UNHANDLED=0x2
 };
-
-typedef void* (*start_routine) (void *);
-static void createEnvironment( BotEnvironment& environ );
 static Move launchEnvironment( OthelloPlayer& player, OthelloBoard& board );
 
 OthelloGame::OthelloGame( OthelloPlayer& player1, OthelloPlayer& player2 ) : 
@@ -85,7 +77,15 @@ void OthelloGame::startGame()
             // Spawn a thread to set up an execution environment for the player.
             if( turn == BLACK )
             {
-                move = launchEnvironment( player1, boardCopy );
+                try
+                {
+                    move = launchEnvironment( player1, boardCopy );
+                }
+                catch(exception& e)
+                {
+                    cout << e.what() << endl;
+                }
+                    
             }
             else if( turn == RED )
             {
@@ -139,6 +139,35 @@ void OthelloGame::postPlayActions( Move& move )
 /* Static functions */
 
 /**
+ * \struct BotEnvironment
+ * Store arguments to be passed to thread
+ */
+struct BotEnvironment
+{
+    OthelloPlayer& player;
+    OthelloBoard& board;
+    Move& move;
+    ExceptionFlags flags;
+
+    BotEnvironment( OthelloPlayer& player, OthelloBoard& board, Move& move ) :
+        player( player ), board( board ), move( move ) {}
+
+};
+
+struct TimeoutClosure
+{
+    pthread_t tid;
+    BotEnvironment& environ;
+
+    TimeoutClosure( pthread_t tid, BotEnvironment& environ):
+        tid( tid ), environ( environ ) {}
+};
+
+typedef void* (*start_routine) (void *);
+static void createEnvironment( BotEnvironment& environ );
+
+
+/**
 * Is a thread cancel function to delete an installed timer
 */
 static void timerCleanup( void* arg )
@@ -151,10 +180,14 @@ static void timerCleanup( void* arg )
 /**
 * Is called when the player's thread times out
 */
-static void killEnvironment( sigval_t val )
+static void handleTimeout( sigval_t val )
 {
-    pthread_t tid = val.sival_int;
-    pthread_cancel( tid );
+    TimeoutClosure *closure = (TimeoutClosure*) val.sival_ptr;
+    pthread_cancel( closure->tid );
+
+    closure->environ.flags = EFLAGS_TIMEOUT;
+
+    delete closure;
 }
 
 /**
@@ -172,23 +205,37 @@ static void createEnvironment( BotEnvironment& environ )
     pthread_setcancelstate( PTHREAD_CANCEL_ENABLE, NULL );
     pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS, NULL );
 
+    // Create a timer
     evt.sigev_notify = SIGEV_THREAD;
     evt.sigev_signo = 0;
-    evt.sigev_value.sival_int = pthread_self();
-    evt.sigev_notify_function = killEnvironment;
+    evt.sigev_value.sival_ptr = new TimeoutClosure( pthread_self(), environ );
+    evt.sigev_notify_function = handleTimeout;
     evt.sigev_notify_attributes = NULL;
+
+    // Using _POSIX_THREAD_CPUTIME is fairer to the bot because it counts only
+    // the time it's thread (i.e. it) gets.
     timer_create( _POSIX_THREAD_CPUTIME, &evt, &timerid );
 
+    // Push a handler that will delete the timer
     pthread_cleanup_push( timerCleanup, timerid );
 
-    its.it_value.tv_sec = 2;
+    // Setup the timer for X seconds.
+    its.it_value.tv_sec = BOT_TIMEOUT;
     its.it_value.tv_nsec = 0;
     its.it_interval.tv_sec = 0;
     its.it_interval.tv_nsec = 0;
     timer_settime( timerid, 0, &its, NULL );
 
-    environ.move = environ.player.play( environ.board );
+    // Finally let the bot play
+    try {
+        environ.move = environ.player.play( environ.board );
+    }
+    catch(exception& e)
+    {
+        environ.flags = EFLAGS_UNHANDLED;
+    }
 
+    // Remove aforementioned handler
     pthread_cleanup_pop( true );
 }
 
@@ -204,10 +251,8 @@ static Move launchEnvironment( OthelloPlayer& player, OthelloBoard& board )
     Move move = Move::empty();
     BotEnvironment environ( player, board, move );
 
-    // Setup attributes to catch signals
-
+    // Launch a thread
     pthread_attr_init( &attr );
-
     s = pthread_create( &t_id, &attr, (start_routine) createEnvironment, &environ ) != 0;
     if( s != 0 )
     {
@@ -216,6 +261,19 @@ static Move launchEnvironment( OthelloPlayer& player, OthelloBoard& board )
     }
 
     pthread_join( t_id, NULL );
+
+    // Check environ flags for exceptions
+    switch( environ.flags )
+    {
+        case EFLAGS_TIMEOUT:
+            throw TimeoutException();
+            break;
+        case EFLAGS_UNHANDLED:
+            throw BotException();
+            break;
+        case EFLAGS_NONE:
+        default:;
+    }
 
     return move;
 }
