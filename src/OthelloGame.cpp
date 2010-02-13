@@ -272,7 +272,7 @@ static Move launchEnvironment( OthelloPlayer& player, OthelloBoard& board )
     if( s != 0 )
     {
         errno = s;
-        perror("pthread_create");
+        perror( "pthread_create" );
     }
 
     pthread_join( t_id, NULL );
