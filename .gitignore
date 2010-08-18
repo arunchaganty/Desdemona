@@ -7,3 +7,4 @@ lib/
 *.o
 *.so
 *~
+web/settings.py
