@@ -9,11 +9,16 @@ div#header {
     text-align: center;
 }
 
+div#header table {
+    margin: auto;
+}
+
+
 /* Linkbar */
 div#linkbar {
     width: 100%;
     margin: 0 auto;
-    margin-top: 40px;
+    margin-top: 10px;
     text-align: center;
 }
 
