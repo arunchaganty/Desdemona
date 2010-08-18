@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Desdemona Online</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="{{MEDIA_URL}}/css/style.css" type="text/css" ></link>
+        <link rel="top" title="NewsLine" href="{{SITE_URL}}" />
+        <link rel="icon" href="{{MEDIA_URL}}/images/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="header">
+            <!--<img src="{{MEDIA_URL}}/images/dice.png" />-->
+            <h1>Desdemona Online</h1>
+        </div>
+
+        <div id="linkbar">
+            <a href="/home/">Home</a> &middot;
+            <a href="/api/">Standings</a>
+            <!--
+             &middot; <a href="/api/">Manage Bots</a> 
+            -->
+        </div>
+
+        <div id="body">
+            {% block body %}
+            {% endblock %}
+        </div>
+
+        <div id="footer">
+            &copy; Arun Chaganty <br />
+            Computer Science and Engineering, IIT Madras
+        </div>
+    </body>
+</html>
+
+

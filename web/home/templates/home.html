@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div>
+    <table id="home-table">
+        <tr>
+            <td>
+                <p id="description">
+                Desdemona Online is a <i>competition judge</i> created to
+                evaluate AI bots created for the "Artificial Intelligence"
+                course taken by Dr. Deepak Khemani.
+
+                <!-- More material about the judge -->
+                </p>
+            </td>
+            <td>
+                <div id="login" class="centered">
+                <form method="post" action="">
+                <h3>Login</h3>
+                {{form.as_table}}
+                </form>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+</div>
+{% endblock %}
+

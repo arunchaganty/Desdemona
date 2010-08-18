@@ -1,0 +1,62 @@
+
+body {
+    width: 800px;
+    margin: 30px auto;
+}
+
+/* Header */
+div#header {
+    text-align: center;
+}
+
+/* Linkbar */
+div#linkbar {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 40px;
+    text-align: center;
+}
+
+div#linkbar a {
+    color: black;
+    text-decoration: none;
+}
+
+div#linkbar a:hover {
+    font-weight: bold;
+}
+
+/* Logout */
+div#logout {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Body */
+div#body {
+    min-height: 300px;
+    margin-top: 10px;
+    border: thin;
+}
+
+
+/* Footer */
+div#footer {
+    text-align: center;
+}
+
+/* Miscellaneous */
+div.centered {
+    text-align: center;
+}
+
+/* Poem */
+table#home-table td {
+    width: 50%;
+}
+
+
+
+
+
