@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div>
+  <div id="add-submission">
+    <form method="POST" action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <table>
+        {{form}}
+        <tr>
+          <td></td>
+          <td>
+            <span class="right">
+              <input type="submit" value="Submit" />
+            </span>
+          </td>
+        </table>
+
+      </form>
+    </div>
+    <div id="view-submission">
+
+    </div>
+  </div>
+  {% endblock %}
+
