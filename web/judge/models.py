@@ -9,3 +9,11 @@ class Submission( models.Model ):
     data = models.FileField( upload_to='bots' )
     comments = models.TextField()
 
+    def get_score(self):
+        # TODO: Query here
+        return 0
+    score = property(get_score)
+
+    def __unicode__(self):
+        return "[Submission %s]"%(self.sha1sum)
+    

@@ -21,7 +21,21 @@ def manage(request):
     else:
         form = forms.SubmissionForm()
 
+    submissions = models.Submission.objects.filter(team = request.user)
+
     return render_to_response("manage.html", 
-            {'form':form},
+            {'form':form,
+            'submissions':submissions},
+            context_instance = RequestContext(request))
+
+def standings(request):
+
+    return render_to_response("standings.html", 
+            {},
+            context_instance = RequestContext(request))
+
+def results(request):
+    return render_to_response("results.html", 
+            {},
             context_instance = RequestContext(request))
 

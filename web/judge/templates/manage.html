@@ -3,6 +3,7 @@
 {% block body %}
 <div>
   <div id="add-submission">
+    <h2>Add a Submission</h2>
     <form method="POST" action="" enctype="multipart/form-data">
       {% csrf_token %}
       <table>
@@ -15,11 +16,28 @@
             </span>
           </td>
         </table>
-
       </form>
     </div>
     <div id="view-submission">
-
+    <h2>Existing Submissions</h2>
+    {% if submissions %}
+        <table id="submissions">
+          <thead>
+            <th>Timestamp</th> <th>SHA1 Checksum</th> <th>Comments</th> <th>Score</th>
+          </thead>
+        <tbody>
+        {% for submission in submissions %}
+        <tr>
+          <td><b>{{submission.timestamp}}</b></td>
+          <td>{{submission.sha1sum}}</td>
+          <td>{{submission.comments}}</td>
+          <td>{{submission.score}}</td>
+        {% endfor %}
+        </tbody>
+        </table>
+    {% else %}
+        <b>None</b>
+    {% endif %}
     </div>
   </div>
   {% endblock %}

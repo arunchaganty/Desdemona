@@ -15,6 +15,7 @@ class SubmissionForm( forms.ModelForm ):
         forms.ModelForm.clean(self)
         self.clean_sha1sum()
         self.cleaned_data["data"].name = self.cleaned_data["sha1sum"]
+        self.instance.sha1sum = self.cleaned_data["sha1sum"]
         return self.cleaned_data
 
     def clean_sha1sum(self):
