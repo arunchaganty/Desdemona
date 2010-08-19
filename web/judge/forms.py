@@ -18,6 +18,8 @@ class SubmissionForm( forms.ModelForm ):
         self.instance.sha1sum = self.cleaned_data["sha1sum"]
         return self.cleaned_data
 
+    # TODO: Check binary for validity, etc.
+
     def clean_sha1sum(self):
         data = self.cleaned_data["data"]
         self.cleaned_data["sha1sum"] = hashlib.sha1(data.read()).hexdigest()
