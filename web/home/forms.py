@@ -11,7 +11,7 @@ class TeamRegistrationForm( forms.Form ):
     name = forms.CharField( max_length=100 )
     email = forms.EmailField( max_length=100 )
     password = forms.CharField( widget = forms.PasswordInput, max_length=100 )
-    password_verify = forms.CharField( widget = forms.PasswordInput, max_length=100 )
+    password_verify = forms.CharField( widget = forms.PasswordInput, label="Verify Password", max_length=100 )
 
     def clean_password_verify(self):
         if self.cleaned_data["password_verify"] != self.cleaned_data["password"]:
