@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div id="standings">
+<h2>Match Results</h2>
+{% if runs %}
+    <table id="results" class="results">
+      <thead>
+        <th>Timestamp</th> <th>Team 1</th> <th>Team 2</th> <th>Results</th> <th>Details</th> 
+      </thead>
+    <tbody>
+    {% for run in runs %}
+    <tr>
+      <td><b>{{run.timestamp}}</b></td>
+      <td>{{run.player1}}</td>
+      <td>{{run.player2}}</td>
+      <td>{{run.result}}</td>
+      <td><a href="/judge/run/{{run.id}}/">Click Here</a></td>
+    {% endfor %}
+    </tbody>
+    </table>
+{% else %}
+    <b>None</b>
+{% endif %}
+</div>
+  {% endblock %}
+

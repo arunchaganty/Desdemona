@@ -18,6 +18,7 @@ class Submission( models.Model ):
         return "[Submission %s]"%(self.sha1sum)
 
 class Run( models.Model ):
+    timestamp = models.DateTimeField( auto_now = True )
     player1 = models.ForeignKey( Submission, related_name="player1_runset" )
     player2 = models.ForeignKey( Submission, related_name="player2_runset" )
     score = models.IntegerField()

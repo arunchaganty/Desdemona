@@ -21,15 +21,14 @@
     <div id="view-submission">
     <h2>Existing Submissions</h2>
     {% if submissions %}
-        <table id="submissions">
+        <table id="submissions" class="results">
           <thead>
-            <th>Timestamp</th> <th>SHA1 Checksum</th> <th>Comments</th> <th>Score</th>
+            <th>Timestamp</th> <th>Comments</th> <th>Score</th>
           </thead>
         <tbody>
         {% for submission in submissions %}
         <tr>
           <td><b>{{submission.timestamp}}</b></td>
-          <td>{{submission.sha1sum}}</td>
           <td>{{submission.comments}}</td>
           <td>{{submission.score}}</td>
         {% endfor %}

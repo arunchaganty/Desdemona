@@ -88,8 +88,8 @@ div#help {
     height: 300px;
 }
 
-table#scores td,th {
-    min-width: 100px;
+table.results td,th {
+    min-width: 80px;
     text-align: right;
 }
 
