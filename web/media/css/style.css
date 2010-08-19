@@ -57,7 +57,17 @@ div.centered {
     text-align: center;
 }
 
-/* Poem */
+div.right {
+    text-align: right;
+}
+
+span.centered {
+    text-align: center;
+}
+span.right {
+    text-align: right;
+}
+
 table#home-table td {
     width: 50%;
 }
@@ -65,11 +75,16 @@ table#home-table td {
 div#login {
     width: 300px;
     margin: auto;
-    padding: 2px;
+    padding: 10px;
     border: solid 1px;
     height: 300px;
-
 }
 
-
+div#help {
+    width: 300px;
+    margin: auto;
+    padding: 10px;
+    border: solid 1px;
+    height: 300px;
+}
 

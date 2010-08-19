@@ -5,5 +5,7 @@ from django.conf.urls.defaults import *
 # admin.autodiscover()
 
 urlpatterns = patterns('web.home.views',
+    (r'^register/$', 'register'),
+    (r'^logout/$', 'logout'),
     (r'^$', 'home'),
 )

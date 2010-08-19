@@ -2,28 +2,52 @@
 
 {% block body %}
 <div>
-    <table id="home-table">
-        <tr>
-            <td>
-                <p id="description">
-                <b>Desdemona Online</b> is a <i>competition judge</i> created to
-                evaluate AI bots created for the "Artificial Intelligence"
-                course taken by Dr. Deepak Khemani.
+  <table id="home-table">
+    <tr>
+      <td>
+        <p id="description">
+        <b>Desdemona Online</b> is a <i>competition judge</i> created to
+        evaluate AI bots created for the "Artificial Intelligence"
+        course taken by Dr. Deepak Khemani.
 
-                <!-- More material about the judge -->
-                </p>
-            </td>
-            <td>
-                <div id="login" class="centered">
-                <form method="post" action="">
-                <h3>Login</h3>
-                {{form.as_table}}
-                </form>
-                </div>
-            </td>
-        </tr>
+        <!-- More material about the judge -->
+        </p>
+      </td>
+      <td>
+        <!-- Login -->
+        {% if not user.is_authenticated %}
+        <div id="login">
+          <form method="post" action="">
+            {% csrf_token %}
+            <h3>Login</h3>
+            <table id="login_form">
+              {{form.as_table}}
+            </table>
+            <div class="centered">
+            <a href="/home/register/">Register</a> &middot; <a href="/home/forgot/"> Forgot Password?</a>
+          </div>
+          <br />
+          <div class="right">
+              <input type="submit" value="Login" />
+          </div>
+          </form>
+        </div>
+        {% else %}
+        <!-- Move to stuff -->
+        <div id="help">
+          <h3>Welcome {{user}}</h3>
+          <ul>
+            <li>Manage Submissions</li>
+            <li>View Results</li>
+            <li>View Standings</li>
+          </ul>
 
-    </table>
+          <!-- Display standings -->
+        </div>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
 </div>
 {% endblock %}
 
