@@ -26,6 +26,7 @@ enum ExceptionFlags
     EFLAGS_UNHANDLED=0x2
 };
 static Move launchEnvironment( OthelloPlayer& player, OthelloBoard& board );
+extern struct Options g_Options;
 
 OthelloGame::OthelloGame( OthelloPlayer& player1, OthelloPlayer& player2 ) : 
     player1(player1), player2(player2)
@@ -58,7 +59,10 @@ void OthelloGame::makeMove( const Move& move )
 
 void OthelloGame::printState()
 {
-    board.print( turn );
+    if( g_Options.isVerbose )
+    {
+        board.print( turn );
+    }
 }
 
 Turn OthelloGame::startGame()

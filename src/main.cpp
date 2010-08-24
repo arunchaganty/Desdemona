@@ -22,32 +22,29 @@ using namespace Desdemona;
 
 extern int optind, opterr;
 
-enum Mode
-{
-    NORMAL=0,
-    REPLAY=1,
-    TEST=2
-};
+Options g_Options;
 
 static void runGame( string blackBotPath, string redBotPath );
 
 int main( int argc, char* argv[] )
 {
     int opt;
-    Mode mode = NORMAL;
 
     loadInit();
 
     // Parse command line options 
-    while( ( opt = getopt( argc, argv, "trh" ) ) != -1 )
+    while( ( opt = getopt( argc, argv, "trvh" ) ) != -1 )
     {
         switch( opt ) 
         {
             case 't':
-                mode = TEST;
+                g_Options.mode = TEST;
                 break;
             case 'r':
-                mode = REPLAY;
+                g_Options.mode = REPLAY;
+                break;
+            case 'v':
+                g_Options.isVerbose = true;
                 break;
             case 'h':
             default: /* '?' */
@@ -60,12 +57,13 @@ int main( int argc, char* argv[] )
                 fprintf( stderr, "Usage: %s -r <replay-file>\n", argv[ 0 ] );
                 fprintf( stderr, "Options:\n" );
                 fprintf( stderr, "\t-h \t--\t Print this message\n" );
+                fprintf( stderr, "\t-v \t--\t Verbose (print all game states)\n" );
                 fprintf( stderr, "\t-r \t--\t Replay a game\n" );
                 exit( EXIT_FAILURE );
         }
     }
 
-    if( mode == REPLAY && ( argc - optind == 1 ) )
+    if( g_Options.mode == REPLAY && ( argc - optind == 1 ) )
     {
         string filename = string( argv[ optind + 0 ] );
 
@@ -84,14 +82,14 @@ int main( int argc, char* argv[] )
             game.replayGame( filename );
         }
     }
-    else if( mode == NORMAL && ( argc - optind == 2 ) )
+    else if( g_Options.mode == NORMAL && ( argc - optind == 2 ) )
     {
         string blackBotPath = string( argv[ optind + 0 ] );
         string redBotPath = string( argv[ optind + 1 ] );
 
         runGame( blackBotPath, redBotPath );
     }
-    else if( mode == TEST )
+    else if( g_Options.mode == TEST )
     {
         // Currently does nothing
         //runTest();

@@ -13,6 +13,26 @@ using namespace std;
 
 namespace Desdemona
 {
+    enum Mode
+    {
+        NORMAL=0,
+        REPLAY=1,
+        TEST=2
+    };
+
+    struct Options
+    {
+        Mode mode;
+        bool isVerbose;
+
+        Options()
+        {
+            mode = NORMAL;
+            isVerbose = false;
+        }
+
+    };
+
     enum Coin
     {
         EMPTY,
