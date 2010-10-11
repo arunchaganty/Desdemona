@@ -65,7 +65,7 @@ void OthelloGame::printState()
     }
 }
 
-Turn OthelloGame::startGame()
+int OthelloGame::startGame()
 {
     printState();
 
@@ -112,20 +112,9 @@ Turn OthelloGame::startGame()
         printState();
     } while( !isGameOver() );
 
-    cout << "Game Over" << endl;
+    cerr << "Game Over" << endl;
 
-    if( board.getRedCount() > board.getBlackCount() )
-    {
-        return RED;
-    }
-    else if( board.getRedCount() < board.getBlackCount() )
-    {
-        return BLACK;
-    }
-    else 
-    {
-        return EMPTY; // Alias for a draw
-    }
+    return board.getRedCount() - board.getBlackCount();
 }
 
 void OthelloGame::replayGame( string filename )

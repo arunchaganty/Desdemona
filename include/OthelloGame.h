@@ -30,9 +30,9 @@ namespace Desdemona
             void printState();
             /**
              * Play a game
-             * @return - Winner of the game
+             * @return - Red Count - Black Count
              */
-            Turn startGame();
+            int startGame();
             void replayGame( string filename );
 
         protected:

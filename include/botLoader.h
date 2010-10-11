@@ -13,6 +13,6 @@
 using namespace Desdemona;
 
 void loadInit();
-OthelloPlayer& loadBot( string botPath, Turn turn );
+OthelloPlayer* loadBot( string botPath, Turn turn );
 
 #endif /* #ifndef BOTLOADER_H */

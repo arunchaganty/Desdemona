@@ -30,7 +30,7 @@ void loadInit()
     }
 }
 
-OthelloPlayer& loadBot( string botPath, Turn turn )
+OthelloPlayer* loadBot( string botPath, Turn turn )
 {
     void* botMod;
     OthelloPlayer* bot;
@@ -59,6 +59,6 @@ OthelloPlayer& loadBot( string botPath, Turn turn )
 
     bot = createBotFn( turn );
 
-    return *bot;
+    return bot;
 }
 
