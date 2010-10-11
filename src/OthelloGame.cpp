@@ -124,12 +124,21 @@ void OthelloGame::replayGame( string filename )
     {
         char x; int y;
 
+        printState();
         // Read a move from the file
         input >> x >> y;
-        makeMove( Move( x - 'a', y ) );
+        if( x == 'p' )
+        {
+            makeMove( Move::pass() );
+        }
+        else
+        {
+            makeMove( Move( x - 'a', y ) );
+        }
         // Change the turn
         turn = other( turn );
     }
+    printState();
     input.close();
 }
 

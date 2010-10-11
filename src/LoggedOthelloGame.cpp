@@ -14,7 +14,6 @@ using namespace Desdemona;
 LoggedOthelloGame::LoggedOthelloGame( string logfile, OthelloPlayer& player1, OthelloPlayer& player2 ) : 
     OthelloGame( player1, player2 ), log( logfile.c_str(), fstream::out )
 {
-    log << "# Desdemona Game Log" << endl;
 }
 
 LoggedOthelloGame::~LoggedOthelloGame()
@@ -26,7 +25,7 @@ void LoggedOthelloGame::postPlayActions( Move& move )
 {
     if( move == Move::pass() )
     {
-        log << (char) 'p' << endl;
+        log << (char) 'p' << 0 << endl;
     }
     else
     {
