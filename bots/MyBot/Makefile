@@ -6,17 +6,18 @@
 ROOTDIR  = ../../
 include $(ROOTDIR)Makefile.inc
 
-LDFLAGS += -l$(ROOTDIR)lib/libOthello.so
-
 BOT	= MyBot
+OUT = bot.so
 
+all: $(OUT)
 
-all: ../$(BOT).so
-
-../$(BOT).so: $(BOT).cpp $(ROOTDIR)lib/libOthello.so
+$(OUT): $(BOT).cpp $(ROOTDIR)lib/libOthello.so
 	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@
 
-.PHONY: clean 
+.PHONY: clean submission
+
+submission: clean
+	zip submission.zip *
 
 clean:
-	rm -rf ../$(BOT).so
+	rm -rf $(OUT)

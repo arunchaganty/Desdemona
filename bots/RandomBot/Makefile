@@ -8,13 +8,12 @@ include $(ROOTDIR)Makefile.inc
 
 BOT	= RandomBot
 
+all: $(BOT).so
 
-all: ../$(BOT).so
-
-../$(BOT).so: $(BOT).cpp $(ROOTDIR)lib/libOthello.so
+$(BOT).so: $(BOT).cpp $(ROOTDIR)lib/libOthello.so
 	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@
 
 .PHONY: clean 
 
 clean:
-	rm -rf ../$(BOT).so
+	rm -rf $(BOT).so

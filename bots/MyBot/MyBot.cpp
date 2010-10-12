@@ -1,4 +1,4 @@
-/**
+/*
 * @file botTemplate.cpp
 * @author Arun Tejasvi Chaganty <arunchaganty@gmail.com>
 * @date 2010-02-04
@@ -27,9 +27,10 @@ class MyBot: public OthelloPlayer
          */
         virtual Move play( const OthelloBoard& board );
     private:
-}
+};
 
-MyBot::MyBot()
+MyBot::MyBot( Turn turn )
+    : OthelloPlayer( turn )
 {
 }
 
@@ -42,4 +43,19 @@ Move MyBot::play( const OthelloBoard& board )
     for(int i=0; i < randNo; it++, i++);
     return *it;
 }
+
+// The following lines are _very_ important to create a bot module for Desdemona
+
+extern "C" {
+    OthelloPlayer* createBot( Turn turn )
+    {
+        return new MyBot( turn );
+    }
+
+    void destroyBot( OthelloPlayer* bot )
+    {
+        delete bot;
+    }
+}
+
 
