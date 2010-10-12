@@ -33,7 +33,7 @@ int main( int argc, char* argv[] )
     loadInit();
 
     // Parse command line options 
-    while( ( opt = getopt( argc, argv, "trvh" ) ) != -1 )
+    while( ( opt = getopt( argc, argv, "strvh" ) ) != -1 )
     {
         switch( opt ) 
         {
@@ -42,6 +42,9 @@ int main( int argc, char* argv[] )
                 break;
             case 'r':
                 g_Options.mode = REPLAY;
+                break;
+            case 's':
+                g_Options.shouldStep = true;
                 break;
             case 'v':
                 g_Options.isVerbose = true;
@@ -59,11 +62,12 @@ int main( int argc, char* argv[] )
                 fprintf( stderr, "\t-h \t--\t Print this message\n" );
                 fprintf( stderr, "\t-v \t--\t Verbose (print all game states)\n" );
                 fprintf( stderr, "\t-r \t--\t Replay a game\n" );
+                fprintf( stderr, "\t-s \t--\t Step through a game\n" );
                 exit( EXIT_FAILURE );
         }
     }
 
-    if( g_Options.mode == REPLAY && ( argc - optind == 1 ) )
+    if( (g_Options.mode == REPLAY) && ( argc - optind == 1 ) )
     {
         string filename = string( argv[ optind + 0 ] );
 

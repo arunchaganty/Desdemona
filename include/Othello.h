@@ -24,6 +24,7 @@ namespace Desdemona
     {
         Mode mode;
         bool isVerbose;
+        bool shouldStep;
 
         Options()
         {

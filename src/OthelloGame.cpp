@@ -63,6 +63,11 @@ void OthelloGame::printState()
     {
         board.print( turn );
     }
+    if( g_Options.shouldStep )
+    {
+        cin.ignore();
+    }
+
 }
 
 int OthelloGame::startGame()
