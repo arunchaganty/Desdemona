@@ -49,6 +49,9 @@ OthelloBoard::OthelloBoard( const OthelloBoard& other )
             board[i][j] = other.board[i][j];
         }
     }
+
+    blackCount = other.blackCount;
+    redCount = other.redCount;
 }
 
 OthelloBoard& OthelloBoard::operator=( const OthelloBoard& other )
