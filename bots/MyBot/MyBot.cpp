@@ -40,7 +40,6 @@ Move MyBot::play( const OthelloBoard& board )
     int randNo = rand() % moves.size();
     list<Move>::iterator it = moves.begin();
 
-    for(int i=0; i < randNo; it++, i++);
     return *it;
 }
 

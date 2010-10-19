@@ -249,12 +249,12 @@ list<Move> OthelloBoard::getValidMoves( Turn turn ) const
     return moves;
 }
 
-int OthelloBoard::getBlackCount()
+int OthelloBoard::getBlackCount() const
 {
     return blackCount;
 }
 
-int OthelloBoard::getRedCount()
+int OthelloBoard::getRedCount() const
 {
     return redCount;
 }

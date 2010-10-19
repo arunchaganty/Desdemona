@@ -94,12 +94,12 @@ namespace Desdemona
         /**
          * Get a count of number of reds
          */
-        int getRedCount();
+        int getRedCount() const;
 
         /**
          * Get a count of number of blacks
          */
-        int getBlackCount();
+        int getBlackCount() const;
 
         /**
          * Prints board on console
@@ -113,6 +113,11 @@ namespace Desdemona
          * Can be overridden to replace output format
          */
         virtual void print() const;
+
+        inline Coin get(int x, int y) const
+        {
+            return board[x][y];
+        }
 
         private:
         /**

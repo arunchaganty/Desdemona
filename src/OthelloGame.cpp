@@ -246,7 +246,11 @@ static void createEnvironment( BotEnvironment& environ )
     its.it_value.tv_nsec = 0;
     its.it_interval.tv_sec = 0;
     its.it_interval.tv_nsec = 0;
-    timer_settime( timerid, 0, &its, NULL );
+
+    if( !g_Options.ignoreTime )
+    {
+        timer_settime( timerid, 0, &its, NULL );
+    }
 
     // Finally let the bot play
     try {

@@ -9,10 +9,15 @@ include $(ROOTDIR)Makefile.inc
 BOT	= MyBot
 OUT = bot.so
 
+OBJS = $(BOT).o
+
 all: $(OUT)
 
-$(OUT): $(BOT).cpp $(ROOTDIR)lib/libOthello.so
-	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@
+$(OUT): $(BOT).o $(ROOTDIR)lib/libOthello.so
+	$(CC) $(LDFLAGS) -shared $^ -o $@
+
+${OBJS}: %.o : %.cpp 
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 .PHONY: clean submission
 
@@ -21,3 +26,4 @@ submission: clean
 
 clean:
 	rm -rf $(OUT)
+	rm -rf *.o

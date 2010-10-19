@@ -37,11 +37,11 @@ int main( int argc, char* argv[] )
     {
         switch( opt ) 
         {
-            case 't':
-                g_Options.mode = TEST;
-                break;
             case 'r':
                 g_Options.mode = REPLAY;
+                break;
+            case 't':
+                g_Options.ignoreTime = true;
                 break;
             case 's':
                 g_Options.shouldStep = true;
