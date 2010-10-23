@@ -119,7 +119,7 @@ int OthelloGame::startGame()
 
     cerr << "Game Over" << endl;
 
-    return board.getRedCount() - board.getBlackCount();
+    return board.getBlackCount() - board.getRedCount();
 }
 
 void OthelloGame::replayGame( string filename )
