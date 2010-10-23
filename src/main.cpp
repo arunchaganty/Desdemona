@@ -149,7 +149,7 @@ static void runGame( string blackBotPath, string redBotPath )
         }
         else
         {
-            string playerStr = ( margin > 0 ) ? "Red" : "Black";
+            string playerStr = ( margin > 0 ) ? "Black" : "Red";
             cerr << "[Win]: " + playerStr << endl;
         }
         
