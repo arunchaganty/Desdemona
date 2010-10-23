@@ -134,7 +134,7 @@ void OthelloGame::replayGame( string filename )
         input >> x >> y;
         if( x == 'p' )
         {
-            makeMove( Move::pass() );
+            // Do nothing - it's a pass move! 
         }
         else
         {
