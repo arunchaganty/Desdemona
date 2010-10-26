@@ -92,7 +92,7 @@ bool OthelloBoard::validateMove( Turn turn, int x, int y ) const
             if( i == 0 && j == 0 ) continue;
 
             // Only explore directions which begin with a coin of opposite color
-            if ( board[ x+i ][ y+j ] != other( turn ) ) continue;
+            if  (x+i < BOARD_SIZE && y+j < BOARD_SIZE && board[ x+i ][ y+j ] != other( turn ) ) continue;
 
             for( int k=1; validPosition( x+k*i, y+k*j ); k++ )
             {
@@ -139,7 +139,7 @@ void OthelloBoard::makeMove( Turn turn, int x, int y )
             if( i == 0 && j == 0 ) continue;
 
             // Only explore directions which begin with a coin of opposite color
-            if ( board[ x+i ][ y+j ] != other( turn ) ) continue;
+            if ( x+i < BOARD_SIZE && y+j < BOARD_SIZE && board[ x+i ][ y+j ] != other( turn ) ) continue;
 
             bool valid = false;
             for( int k=1; validPosition( x+k*i, y+k*j ); k++ )
