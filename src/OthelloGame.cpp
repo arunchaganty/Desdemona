@@ -252,6 +252,10 @@ static void createEnvironment( BotEnvironment& environ )
         timer_settime( timerid, 0, &its, NULL );
     }
 
+    // Redirect stdout
+    FILE stdout_ = *stdout; 
+    *stdout = *stderr;
+
     // Finally let the bot play
     try {
         environ.move = environ.player.play( environ.board );
@@ -260,6 +264,8 @@ static void createEnvironment( BotEnvironment& environ )
     {
         environ.flags = EFLAGS_UNHANDLED;
     }
+
+    *stdout = stdout_;
 
     // Remove aforementioned handler
     pthread_cleanup_pop( true );
