@@ -198,6 +198,16 @@ static void timerCleanup( void* arg )
     timer_delete( timerid );
 }
 
+/**
+* Is a thread cancel function to reset the stdout
+*/
+static void stdCleanup( void* arg )
+{
+    FILE* stdout_ = (FILE*) arg;
+    *stdout = *stdout_;
+}
+
+
 
 /**
 * Is called when the player's thread times out
@@ -256,6 +266,9 @@ static void createEnvironment( BotEnvironment& environ )
     FILE stdout_ = *stdout; 
     *stdout = *stderr;
 
+    // Push a handler that will reset the stdout
+    pthread_cleanup_push( stdCleanup, &stdout_ );
+
     // Finally let the bot play
     try {
         environ.move = environ.player.play( environ.board );
@@ -265,9 +278,8 @@ static void createEnvironment( BotEnvironment& environ )
         environ.flags = EFLAGS_UNHANDLED;
     }
 
-    *stdout = stdout_;
-
     // Remove aforementioned handler
+    pthread_cleanup_pop( true );
     pthread_cleanup_pop( true );
 }
 
