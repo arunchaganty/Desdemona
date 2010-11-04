@@ -65,6 +65,9 @@ OthelloBoard& OthelloBoard::operator=( const OthelloBoard& other )
             }
         }
     }
+    blackCount = other.blackCount;
+    redCount = other.redCount;
+
     return *this;
 }
 
