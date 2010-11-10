@@ -33,7 +33,7 @@ namespace Desdemona
              * @return - Red Count - Black Count
              */
             int startGame();
-            void replayGame( string filename );
+            int replayGame( string filename );
 
         protected:
             OthelloPlayer& player1;

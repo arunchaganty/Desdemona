@@ -88,7 +88,7 @@ int OthelloGame::startGame()
             {
                 if( turn == BLACK )
                 {
-                        move = launchEnvironment( player1, boardCopy );
+                    move = launchEnvironment( player1, boardCopy );
                         
                 }
                 else if( turn == RED )
@@ -122,7 +122,7 @@ int OthelloGame::startGame()
     return board.getBlackCount() - board.getRedCount();
 }
 
-void OthelloGame::replayGame( string filename )
+int OthelloGame::replayGame( string filename )
 {
     fstream input( filename.c_str(), fstream::in );
     while( !isGameOver() )
@@ -132,19 +132,30 @@ void OthelloGame::replayGame( string filename )
         printState();
         // Read a move from the file
         input >> x >> y;
-        if( x == 'p' )
+
+        try 
         {
-            // Do nothing - it's a pass move! 
+            if( x == 'p' )
+            {
+                // Do nothing - it's a pass move! 
+            }
+            else
+            {
+                makeMove( Move( x - 'a', y ) );
+            }
+            // Change the turn
+            turn = other( turn );
         }
-        else
+        catch( InvalidMoveException& e )
         {
-            makeMove( Move( x - 'a', y ) );
+            OthelloPlayer& player = (turn == BLACK) ? player1 : player2;
+            throw BotInvalidMoveException( player, e.move );
         }
-        // Change the turn
-        turn = other( turn );
     }
     printState();
     input.close();
+    
+    return board.getBlackCount() - board.getRedCount();
 }
 
 bool OthelloGame::isGameOver()

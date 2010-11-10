@@ -25,6 +25,7 @@ extern int optind, opterr;
 Options g_Options;
 
 static void runGame( string blackBotPath, string redBotPath );
+static void replayGame( OthelloGame game, string filename );
 
 int main( int argc, char* argv[] )
 {
@@ -83,7 +84,7 @@ int main( int argc, char* argv[] )
             OthelloPlayer player1 = OthelloPlayer( BLACK );
             OthelloPlayer player2 = OthelloPlayer( RED );
             OthelloGame game( player1, player2 );
-            game.replayGame( filename );
+            replayGame( game, filename );
         }
     }
     else if( g_Options.mode == NORMAL && ( argc - optind == 2 ) )
@@ -180,7 +181,6 @@ static void runGame( string blackBotPath, string redBotPath )
         {
             cout << "TO2" << endl;
         }
-        cerr << "[Timeout]: " << playerStr << endl;
     }
     catch( BotException& e )
     {
@@ -201,3 +201,66 @@ static void runGame( string blackBotPath, string redBotPath )
     }
 }
 
+static void replayGame( OthelloGame game, string filename )
+{
+    try
+    {
+        int margin = game.replayGame( filename );
+
+        if( margin == 0 )
+        {
+            cerr << "[Draw]" << endl;
+        }
+        else
+        {
+            string playerStr = ( margin > 0 ) ? "Black" : "Red";
+            cerr << "[Win]: " + playerStr << endl;
+        }
+        
+        cout << margin << endl;
+    }
+    catch( BotInvalidMoveException& e )
+    {
+        string playerStr = (e.player.turn == BLACK) ? "Black" : "Red" ;
+        cerr << "[Invalid Move]: " << playerStr << endl;
+        if( e.player.turn == BLACK )
+        {
+            cout << "DQ1" << endl;
+        }
+        else
+        {
+            cout << "DQ2" << endl;
+        }
+    }
+    catch( TimeoutException& e )
+    {
+        string playerStr = (e.player.turn == BLACK) ? "Black" : "Red" ;
+        cerr << "[Timeout]: " << playerStr << endl;
+        if( e.player.turn == BLACK )
+        {
+            cout << "TO1" << endl;
+        }
+        else
+        {
+            cout << "TO2" << endl;
+        }
+    }
+    catch( BotException& e )
+    {
+        string playerStr = (e.player.turn == BLACK) ? "Black" : "Red" ;
+        cerr << "[Unhandled Exception]: " << playerStr << endl;
+        if( e.player.turn == BLACK )
+        {
+            cout << "CR1" << endl;
+        }
+        else
+        {
+            cout << "CR2" << endl;
+        }
+    }
+    catch( exception& e )
+    {
+        cout << "ERR" << endl;
+    }
+
+}
